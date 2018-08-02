@@ -2,6 +2,7 @@ const User = require('mongoose').model('User');
 const express = require('express');
 const router = new express.Router();
 const uuid = require('uuid');
+const scraper = require('google-search-scraper');
 
 const RateLimit = require('express-rate-limit');
 
@@ -57,10 +58,68 @@ router.get('/get-user', (req, res) => {
       });
     }
 
-    console.log(user);
+    //console.log(user);
 
     return res.json({
       sites: user[0].sites,
+    });
+  });
+});
+
+// tried to scrape google search results
+router.get('/get-recommendations', (req, res) => {
+  User.find({ recoveryKey: req.query.recoveryKey }, (err, user) => {
+    if (err) {
+      return res.status(400).json({
+        message: 'An intenal error has occurred.',
+      });
+    }
+
+    if (user.length === 0) {
+      return res.status(404).json({
+        message: 'A user with this key does not exist!',
+      });
+    }
+
+    //console.log(user);
+
+    let sites = user[0].sites;
+
+    let recommendations = [];
+
+    for (let i = sites.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [sites[i], sites[j]] = [sites[j], sites[i]];
+    }
+
+    for (let i = 0; i < 3; i++) {
+      let options = {
+        query: sites[i],
+        limit: 3,
+      };
+      scraper.search(options, function (err, url, meta) {
+        // This is called for each result
+        if (err) console.log(err);
+        console.log(url);
+      });
+    }
+
+    return res.json({
+      sites: user[0].sites,
+    });
+  });
+});
+
+router.delete('/delete-user', (req, res) => {
+  User.deleteOne({ recoveryKey: req.query.recoveryKey }, (err) => {
+    if (err) {
+      return res.status(404).json({
+        message: 'User does not exist.',
+      });
+    }
+
+    return res.json({
+      success: true,
     });
   });
 });
