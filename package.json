@@ -1,0 +1,23 @@
+{
+  "name": "infoeducatieopen2018",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cluster-server": "cservice index.js --accessKey goofale",
+    "start": "nodemon"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cluster-service": "^2.1.0",
+    "express-rate-limit": "^2.11.0",
+    "express": "^4.16.3",
+    "mongoose": "^4.10.8",
+    "nodemon": "^1.14.12",
+    "uuid": "^3.3.2",
+    "ddos": "^0.1.28",
+    "compression": "^1.7.2"
+  }
+}
