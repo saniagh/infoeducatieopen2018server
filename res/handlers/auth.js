@@ -11,7 +11,7 @@ let createGroupLimiter = new RateLimit({
   delayAfter: 3,
   delayMs: 3 * 1000,
   max: 1,
-  message: 'Too many orders in a short period of time',
+  message: 'Too many users in a short period of time',
 });
 
 const formValidator = require('../middleware/form-validator.js');
@@ -35,8 +35,6 @@ router.get('/generate-user', createGroupLimiter, (req, res) => {
         });
     }
 
-    console.log(recoveryKey);
-
     return res.json({
       recoveryKey: recoveryKey,
     });
@@ -57,8 +55,6 @@ router.get('/get-user', (req, res) => {
         message: 'A user with this key does not exist!',
       });
     }
-
-    //console.log(user);
 
     return res.json({
       sites: user[0].sites,
@@ -81,8 +77,6 @@ router.get('/get-recommendations', (req, res) => {
       });
     }
 
-    //console.log(user);
-
     let sites = user[0].sites;
 
     let recommendations = [];
@@ -98,7 +92,6 @@ router.get('/get-recommendations', (req, res) => {
         limit: 3,
       };
       scraper.search(options, function (err, url, meta) {
-        // This is called for each result
         if (err) console.log(err);
         console.log(url);
       });
