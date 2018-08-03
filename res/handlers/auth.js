@@ -128,21 +128,33 @@ router.post('/update-user', (req, res) => {
 
   let newSites = JSON.parse(req.query.sites);
 
-  User.updateOne({ recoveryKey: req.query.recoveryKey }, {
-    $set: {
-      sites: newSites,
-    },
-  }, (err) => {
+  User.find({ recoveryKey: req.query.recoveryKey }, (err, user) => {
     if (err) {
       return res.status(400).json({
         message: 'An internal error has occurred.',
       });
     }
 
-    return res.json({
-      message: 'User has been updated.',
-    });
+    if (user[0].sites.length <= newSites.length) {
+      User.updateOne({ recoveryKey: req.query.recoveryKey }, {
+        $set: {
+          sites: newSites,
+        },
+      }, (err) => {
+        if (err) {
+          return res.status(400).json({
+            message: 'An internal error has occurred.',
+          });
+        }
+
+        return res.json({
+          message: 'User has been updated.',
+        });
+      });
+    }
+
   });
+
 });
 
 module.exports = router;

@@ -8,10 +8,12 @@ import Routes from './Routes.jsx';
 
 class BaseApp extends Component {
   render() {
+
+    const cardMediaQuery = window.matchMedia('(max-width: 768px)');
     return (
         <Layout style={{ minHeight: '100vh' }}>
           <header style={{
-            height: 60,
+            height: cardMediaQuery.matches ? 90 : 60,
             width: '100%',
             background: 'white',
             display: 'flex',
@@ -20,7 +22,11 @@ class BaseApp extends Component {
                 onClick={() => window.location.replace('/')}>Net<span
                 style={{ color: 'orange' }}> Max</span>
             </h1>
-            <h2 style={{ marginLeft: '35%', padding: 16, textAlign: 'center' }}>
+            <h2 style={{
+              marginLeft: cardMediaQuery.matches ? '0' : '35%',
+              padding: 16,
+              textAlign: 'center',
+            }}>
               Statistics and management
             </h2>
           </header>

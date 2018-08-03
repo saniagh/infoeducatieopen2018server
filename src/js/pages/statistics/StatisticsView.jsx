@@ -35,10 +35,6 @@ class StatisticsView extends Component {
           sites: newSites,
         });
       });
-      axios.get('/users/get-recommendations', {
-        params: { recoveryKey: this.props.match.params.recoveryKey },
-      }).then((res) => {
-      });
     } else notification.error({
       message: 'No key detected',
       description: 'Please use a key to access your statistics',
