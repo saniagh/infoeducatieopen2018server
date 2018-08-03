@@ -23,7 +23,7 @@ class Home extends Component {
             <Input value={this.props.inputValue}
                    onChange={this.props.onInputChange}
                    placeholder="Search your statistics here by typing your unique recovery key"
-                   style={{ maxWidth: 400 }}
+                   style={{ maxWidth: 400, margin: 10 }}
                    onKeyDown={(e) => {
                      if (e.key === 'Enter') {
                        this.props.onSearch();
